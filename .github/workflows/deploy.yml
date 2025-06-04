@@ -9,12 +9,17 @@ jobs:
   first-job:
     runs-on: ubuntu-latest
 
+    # Los envs son variables de entorno que se pueden usar en los steps y jobs
+    env:
+      MY_ENV_VAR: "Hola Mundo"
+
     steps:
       - name: Hola Mundo
-        run: echo "Hola Mundo"
+        run: echo "Hola Mundo $MY_ENV_VAR"
 
   second-job:
-    # if: ${{ github.event_name == 'push' }}
+    # if: Los if se pueden usar para condicionar la ejecución de un job o step
+    # if: ${{ github.ref == 'refs/heads/main' }}
     # if: ${{ github.ref == 'refs/heads/main' }}
     if: ${{ github.ref == 'refs/heads/main' }}
     needs: first-job
