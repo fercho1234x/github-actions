@@ -6,9 +6,17 @@ on:
       - main
 
 jobs:
-  first-jobs:
+  first-job:
     runs-on: ubuntu-latest
 
     steps:
       - name: Hola Mundo
         run: echo "Hola Mundo"
+
+jobs:
+  second-job:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Hola Mundo
+        run: echo "Hola Mundo Dos :D"
