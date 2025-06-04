@@ -15,7 +15,7 @@ jobs:
 
     steps:
       - name: Hola Mundo
-        run: echo "Hola Mundo ${MY_ENV_VAR}"
+        run: echo "Hola Mundo $MY_ENV_VAR"
 
   second-job:
     # if: Los if se pueden usar para condicionar la ejecución de un job o step
