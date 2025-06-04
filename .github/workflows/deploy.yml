@@ -14,6 +14,9 @@ jobs:
         run: echo "Hola Mundo"
 
   second-job:
+    # if: ${{ github.event_name == 'push' }}
+    # if: ${{ github.ref == 'refs/heads/main' }}
+    if: ${{ github.ref == 'refs/heads/main' }}
     needs: first-job
     runs-on: ubuntu-latest
 
