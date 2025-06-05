@@ -56,3 +56,7 @@ jobs:
       # Otra manera de acceder a las variables de salida de otro job utilizando envs
       - name: Print env MY_ENV_VAR_SECODN_JOB
         run: echo "$MY_ENV_VAR_SECODN_JOB"
+
+      # Otra manera de acceder a las variables de salida de otro job utilizando el contexto de ejecución del step
+      - name: Print output MY_OUTPUT_VAR_THREE
+        run: echo Output from first job: ${{ needs.first-job.outputs.MY_OUTPUT_VAR_THREE }}
