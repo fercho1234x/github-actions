@@ -15,16 +15,30 @@ jobs:
 
     steps:
       - name: Hola Mundo
+        # Si le ponemos un nombre al step, no podemos hacer referencia del contexto de ejecución del step, es necesario colocarler un id
+        id: step1
         run: echo "Hola Mundo $MY_ENV_VAR"
+        # $GITHUB_OUTPUT es una archivo que se usa para pasar datos entre jobs
+        run: echo "MY_OUTPUT_VAR=Hola Mundo" >> $GITHUB_OUTPUT
+        run: echo $GITHUB_OUTPUT
+
+      - name: Give message
+        # Asi accedemos a las variables que guardamos en GITHUB_OUTPUT
+        run: echo "${{ steps.step1.outputs.MY_OUTPUT_VAR }}"
 
   second-job:
     # if: Los if se pueden usar para condicionar la ejecución de un job o step
     # if: ${{ github.ref == 'refs/heads/main' }}
     # if: ${{ github.ref == 'refs/heads/main' }}
-    if: ${{ github.ref == 'refs/heads/main' }}
+    if: ${{ github.ref == 'refs/heads/main' }} # github.ref es un contexto que contiene la referencia del evento que disparó el workflow
     needs: first-job
     runs-on: ubuntu-latest
 
     steps:
       - name: Hola Mundo
+        # shell: bash
         run: echo "Hola Mundo Dos :D"
+      
+      # Los steps son las acciones que se ejecutan en un job
+      - name: Action
+        uses: actions/checkout@v4
