@@ -77,3 +77,16 @@ jobs:
           name: test-artifact
           path: test.log
         
+  third-job:
+    needs: second-job # Dependemos del segundo job, por lo que no se ejecutará hasta que el segundo job haya terminado
+    # Los jobs pueden ejecutarse en paralelo, si no tienen dependencias entre ellos
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Dowload artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: test-artifact
+      
+      - name: Print artifact content
+        run: cat test.log
