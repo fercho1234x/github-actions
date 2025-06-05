@@ -54,7 +54,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Print output from first job
-      # Una manera de acceder a las variables de salida de otro job es usando el contexto needs.<job_id>.outputs.<output_name>
+        # Una manera de acceder a las variables de salida de otro job es usando el contexto needs.<job_id>.outputs.<output_name>
         run: echo "Output from first job: ${{ needs.first-job.outputs.MY_OUTPUT_VAR_THREE }}"
 
       # Otra manera de acceder a las variables de salida de otro job utilizando envs
