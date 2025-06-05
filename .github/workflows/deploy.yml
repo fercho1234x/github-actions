@@ -68,7 +68,7 @@ jobs:
 
       - name: Artefacts example, generate file
         run: |
-          echo "This is a test file" > test.log
+          echo "This is a test file" >> test.log
 
       - name: Artefacts example, upload file
         uses: actions/upload-artifact@v4
