@@ -9,6 +9,12 @@ jobs:
   first-job:
     runs-on: ubuntu-latest
 
+    outputs:
+      # Las outputs son variables que se pueden usar en otros jobs.
+      MY_OUTPUT_VAR: test uno # Esto es una variable de salida del job, se puede usar en otros jobs con un valor unico
+      MY_OUTPUT_VAR_TWO: test dos
+      MY_OUTPUT_VAR_THREE: ${{ steps.step1.outputs.MY_OUTPUT_VAR_GITHUB_OUTPUT }}
+
     # Los envs son variables de entorno que se pueden usar en los steps y jobs
     env:
       MY_ENV_VAR: "Hola Mundo"
@@ -19,19 +25,24 @@ jobs:
         id: step1
         run: |
           echo "Hola Mundo $MY_ENV_VAR"
-          echo "MY_OUTPUT_VAR=Hola Mundo desde el step" >> $GITHUB_OUTPUT
+          # Guardamos una variable en el contexto de ejecución del step, dentro de GITHUB_OUTPUT, esta variable se puede usar en este mismo step
+          echo "MY_OUTPUT_VAR_GITHUB_OUTPUT=Hola Mundo desde el step" >> $GITHUB_OUTPUT
 
       - name: Give message
         # Asi accedemos a las variables que guardamos en GITHUB_OUTPUT
-        run: echo "${{ steps.step1.outputs.MY_OUTPUT_VAR }}"
+        run: echo "${{ steps.step1.outputs.MY_OUTPUT_VAR_GITHUB_OUTPUT }}"
 
   second-job:
     # if: Los if se pueden usar para condicionar la ejecución de un job o step
     # if: ${{ github.ref == 'refs/heads/main' }}
     # if: ${{ github.ref == 'refs/heads/main' }}
     if: ${{ github.ref == 'refs/heads/main' }} # github.ref es un contexto que contiene la referencia del evento que disparó el workflow
+    # Los jobs pueden depender de otros jobs, si un job depende de otro, no se ejecutará hasta que el job del que depende haya terminado
     needs: first-job
     runs-on: ubuntu-latest
+    
+    env:
+      MY_ENV_VAR_SECODN_JOB: ${{ needs.first-job.outputs.MY_OUTPUT_VAR }} # Accedemos a la variable de salida del primer job, needs es el contexto que nos permite acceder a los jobs que dependen de este job
 
     steps:
       - name: Hola Mundo
@@ -41,3 +52,11 @@ jobs:
       # Los steps son las acciones que se ejecutan en un job
       - name: Action
         uses: actions/checkout@v4
+
+      - name: Print output from first job
+      # Una manera de acceder a las variables de salida de otro job es usando el contexto needs.<job_id>.outputs.<output_name>
+        run: echo "Output from first job: ${{ needs.first-job.outputs.MY_OUTPUT_VAR_THREE }}"
+
+      # Otra manera de acceder a las variables de salida de otro job utilizando envs
+      - name: Print env MY_ENV_VAR_SECODN_JOB
+        run: echo "Env from first job: $MY_ENV_VAR_SECODN_JOB"
