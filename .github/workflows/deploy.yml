@@ -60,3 +60,20 @@ jobs:
       # Otra manera de acceder a las variables de salida de otro job utilizando el contexto de ejecución del step
       - name: Print output MY_OUTPUT_VAR_THREE
         run: echo ${{ needs.first-job.outputs.MY_OUTPUT_VAR_THREE }}
+
+# Los artefacts es la manera de compartir data entre jobs, dentro del mismo workflow
+#  Un artefacto es un archivo o colección de archivos que se generan durante la ejecución de un job y que pueden ser utilizados por otros jobs
+# Tambien se pueden descargar los artefacts
+# Generalmentse se usan para guardar logs, reportes, etc.
+
+      - name: Artefacts example, generate file
+        run: |
+          echo "This is a test file" > test.log
+
+      - name: Artefacts example, upload file
+        uses: actions/upload-artifact@v4
+        # De esta manera podemos pasarler parametros a los actions
+        with:
+          name: test-artifact
+          paths: test.log
+        
