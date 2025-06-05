@@ -75,5 +75,5 @@ jobs:
         # De esta manera podemos pasarler parametros a los actions
         with:
           name: test-artifact
-          paths: test.log
+          path: test.log
         
