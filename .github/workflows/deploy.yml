@@ -17,10 +17,9 @@ jobs:
       - name: Hola Mundo
         # Si le ponemos un nombre al step, no podemos hacer referencia del contexto de ejecución del step, es necesario colocarler un id
         id: step1
-        run: echo "Hola Mundo $MY_ENV_VAR"
-        # $GITHUB_OUTPUT es una archivo que se usa para pasar datos entre jobs
-        run: echo "MY_OUTPUT_VAR=Hola Mundo" >> $GITHUB_OUTPUT
-        run: echo $GITHUB_OUTPUT
+        run: |
+          echo "Hola Mundo $MY_ENV_VAR"
+          echo "MY_OUTPUT_VAR=Hola Mundo desde el step" >> $GITHUB_OUTPUT
 
       - name: Give message
         # Asi accedemos a las variables que guardamos en GITHUB_OUTPUT
